@@ -2,7 +2,6 @@
   "name": "eth-denver",
   "version": "0.1.0",
   "description": "Data visualization project for the Eth Denver hackathon",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,6 +16,8 @@
   },
   "homepage": "https://github.com/wetfish/eth-denver#readme",
   "dependencies": {
+    "jsdom": "^11.6.2",
+    "superagent": "^3.8.2",
     "web3": "^1.0.0-beta.30"
   }
 }
