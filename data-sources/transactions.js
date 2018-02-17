@@ -14,6 +14,7 @@ function processBlock(error, block, subscription)
 
     if(!error)
     {
-        web3.eth.getBlock(block.number).then(console.log);
+        // Subtract 10 from the block number to make sure we are requesting data from a block that has propagated across the network
+        web3.eth.getBlock(block.number - 10).then(console.log);
     }
 }
