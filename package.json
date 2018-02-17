@@ -16,7 +16,8 @@
   },
   "homepage": "https://github.com/wetfish/eth-denver#readme",
   "dependencies": {
-    "jsdom": "^11.6.2",
+    "cheerio": "^1.0.0-rc.2",
+    "cheerio-tableparser": "^1.0.1",
     "superagent": "^3.8.2",
     "web3": "^1.0.0-beta.30"
   }
