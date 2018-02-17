@@ -1,0 +1,22 @@
+{
+  "name": "eth-denver",
+  "version": "0.1.0",
+  "description": "Data visualization project for the Eth Denver hackathon",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wetfish/eth-denver.git"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/wetfish/eth-denver/issues"
+  },
+  "homepage": "https://github.com/wetfish/eth-denver#readme",
+  "dependencies": {
+    "web3": "^1.0.0-beta.30"
+  }
+}
