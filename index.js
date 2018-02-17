@@ -2,6 +2,6 @@
 const apiKey = process.argv[2];
 
 const Web3 = require('web3');
-const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/' + apiKey));
+const web3 = new Web3(new Web3.providers.WebsocketProvider('wss://mainnet.infura.io/ws'));
 
-console.log(web3.eth);
+web3.eth.subscribe('pendingTransactions', console.log);
