@@ -69,31 +69,42 @@ function getMempoolData()
 {
     console.log("[Mempool] Fetching data from Eth Gas Station...");
 
-    request.get('https://ethgasstation.info/txPoolReport.php').end((error, response) =>
+    request.get('https://ethgasstation.info/').end((error, response) =>
     {
         const $ = cheerio.load(response.text);
-        const blockNumber = $('.x_title span').text();
+        const standardGasPrice = $('.tile_stats_count').eq(1).find('.count').text();
 
-        cheerioTableparser($);
-        const mempool = $(".x_content table").parsetable();
-        const stats = {'block': blockNumber};
-        let total = 0;
-
-        console.log("[Mempool] Block #" + blockNumber);
-
-        for(var i = mempool[0].length - 1; i > 0; i--)
+        request.get('https://ethgasstation.info/txPoolReport.php').end((error, response) =>
         {
-            // ETH Gas Station returns the total in the pool at or above specific gradiations, so we have to subtract the total from the current value
-            const priceCount = parseInt(mempool[3][i]) - total;
+            const $ = cheerio.load(response.text);
+            const blockNumber = $('.x_title span').text();
 
-            if(priceCount > 0)
+            cheerioTableparser($);
+            const mempool = $(".x_content table").parsetable();
+            const stats =
             {
-                const bucket = whichBucket(mempool[0][i]);
-                stats[`${bucket.min}-${bucket.max}`] = priceCount;
-                total += priceCount;
-            }
-        }
+                'block': blockNumber,
+                'standardPrice': standardGasPrice,
+                'total': 0,
+                'buckets': {}
+            };
 
-        console.log(stats);
+            console.log("[Mempool] Block #" + blockNumber);
+
+            for(var i = mempool[0].length - 1; i > 0; i--)
+            {
+                // ETH Gas Station returns the total in the pool at or above specific gradiations, so we have to subtract the total from the current value
+                const priceCount = parseInt(mempool[3][i]) - stats.total;
+
+                if(priceCount > 0)
+                {
+                    const bucket = whichBucket(mempool[0][i]);
+                    stats.buckets[`${bucket.min}-${bucket.max}`] = priceCount;
+                    stats.total += priceCount;
+                }
+            }
+
+            console.log(stats);
+        });
     });
 }
