@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="./styles.css">
+    </head>
+    <body>
+        <div id="demo"></div>
+        <pre>
+        const random = d3.randomNormal(0, .2);
+         const series   = d3.range(40).map((v,i)=>[i, random()]);
+
+         const smoothChart = new SmoothChart('#demo', {
+             "width"  : 960,
+             "height" : 500,
+             "ticks"  : 40,
+             series
+         });
+
+         const streamChart =  new StreamChart('#demo', {
+             "width"  : 960,
+             "height" : 500,
+             "ticks"  : 40,
+             series
+         });
+         const stackChart = new StackChart('#demo', {
+             "width"  : 960,
+             "height" : 500,
+             "ticks"  : 40,
+             series
+         });
+         setInterval(function(){
+             //smoothChart.add();
+         },250)
+        </pre>
+        <script src="./bundle.js"></script>
