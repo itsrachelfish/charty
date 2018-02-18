@@ -13,7 +13,8 @@ class SmoothChart{
             width     : elem.width,
             height    : elem.height,
             ticks     : 40,
-            className : 'smoothchart'
+            className : 'smoothchart',
+            interval:1000
         }, opts);
 
 
@@ -117,10 +118,12 @@ class SmoothChart{
             if(point===undefined){
                 point=newVal;
             }
+
             data.push(point);
+            console.log(data)
             path
                 .transition()
-                .duration(250)
+                .duration(opts.interval)
                 .ease(d3.easeLinear)
                 .on("start", tick);
             data.shift();

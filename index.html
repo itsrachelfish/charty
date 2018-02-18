@@ -9,18 +9,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
         <script src="./sample-mempool-data.js"></script>
-
+        <script  src="./charty.js"></script>
         <style>
-            .line {
-              fill: none;
-              stroke: #2d0f41;
-              stroke-width: 2;
-            }
+         .line {
+             fill: none;
+             stroke: #2d0f41;
+             stroke-width: 2;
+         }
 
-            .buy1 { fill: #2c5a9c }
-            .buy2 { fill: #3984b6 }
-            .sell1 { fill: #e3572a }
-            .sell2 { fill: #e97e3b }
+         .buy1 { fill: #2c5a9c }
+         .buy2 { fill: #3984b6 }
+         .sell1 { fill: #e3572a }
+         .sell2 { fill: #e97e3b }
         </style>
     </head>
 
@@ -35,93 +35,6 @@
             <path class="line"></path>
         </svg>
 
-        <script>
-            const maxGasPrice = d3.max(blocks, (block) => block.mean);
-            const maxPendingTransactions = d3.max(blocks, (block) => block.volume);
 
-            var scale =
-            {
-                x: d3.scaleLinear().domain([0, 10]).range([0, 1000]),
-
-                line:
-                {
-                    y: d3.scaleLinear().domain([-maxGasPrice, maxGasPrice * 2]).range([400, 0])
-                },
-
-                area:
-                {
-                    y: d3.scaleLinear().domain([-maxPendingTransactions, maxPendingTransactions * 2]).range([400, 0])
-                }
-            };
-
-            var lineGenerator = d3.line().curve(d3.curveCatmullRom.alpha(1))
-            .x(function(d, i) {
-                return scale.x(i);
-            })
-            .y(function(d) {
-                return scale.line.y(d);
-            });
-
-            var areaGenerator = d3.area().curve(d3.curveCatmullRom.alpha(1))
-            .x(function(d, i) {
-                return scale.x(i);
-            })
-            .y0(function(d) {
-                return scale.area.y(d.low);
-            })
-            .y1(function(d) {
-                return scale.area.y(d.high);
-            });
-
-            // Loop through buckets
-            let buckets = {};
-
-            blocks.forEach((block) =>
-            {
-
-            });
-
-            // Generate dataset for each unique bucket
-
-            // Determine which buckets are above / below the mean
-            // Apply colors based on that
-
-            // Dynamically generate path / group elements
-
-
-            // Generate sample buy data
-            var areaBuy = areaGenerator(blocks.map((block) =>
-            {
-                var thingy = maxPendingTransactions / maxGasPrice;
-                return {'low': block.mean * thingy, 'high': block.mean * thingy * 1.2}
-            }));
-
-            var areaBuy2 = areaGenerator(blocks.map((block) =>
-            {
-                var thingy = maxPendingTransactions / maxGasPrice;
-
-                return {'low': block.mean * thingy, 'high': block.mean * thingy * 1.4}
-            }));
-
-            var areaSell = areaGenerator(blocks.map((block) =>
-            {
-                var thingy = maxPendingTransactions / maxGasPrice;
-                return {'high': block.mean * thingy, 'low': block.mean * thingy * 0.8}
-            }));
-
-            var areaSell2 = areaGenerator(blocks.map((block) =>
-            {
-                var thingy = maxPendingTransactions / maxGasPrice;
-                return {'high': block.mean * thingy, 'low': block.mean * thingy * 0.6}
-            }));
-
-            var line = lineGenerator(blocks.map((block) => block.mean));
-
-            d3.select('.buy1').append('path').attr('d', areaBuy);
-            d3.select('.buy2').append('path').attr('d', areaBuy2);
-            d3.select('.sell1').append('path').attr('d', areaSell);
-            d3.select('.sell2').append('path').attr('d', areaSell2);
-            d3.select('.line').attr('d', line);
-        </script>
     </body>
 </html>
