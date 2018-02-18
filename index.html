@@ -38,9 +38,9 @@
             // Chart data
             const blocks =
             [
-                { block: '5111256',
-                  standardPrice: '1',
-                  total: 1816,
+                { index: '5111256',
+                  mean: '1',
+                  volume: 1816,
                   buckets:
                    { '90-100': 2,
                      '20-30': 3,
@@ -56,9 +56,9 @@
                      '0.2-0.3': 274,
                      '0.1-0.2': 835,
                      '0-0.1': 192 } },
-                { block: '5111262',
-                  standardPrice: '1',
-                  total: 1731,
+                { index: '5111262',
+                  mean: '1',
+                  volume: 1731,
                   buckets:
                    { '50-60': 1,
                      '30-40': 3,
@@ -75,9 +75,9 @@
                      '0.2-0.3': 274,
                      '0.1-0.2': 835,
                      '0-0.1': 93 } },
-                { block: '5111269',
-                  standardPrice: '3',
-                  total: 1792,
+                { index: '5111269',
+                  mean: '3',
+                  volume: 1792,
                   buckets:
                    { '90-100': 2,
                      '40-50': 1,
@@ -95,9 +95,9 @@
                      '0.2-0.3': 273,
                      '0.1-0.2': 832,
                      '0-0.1': 161 } },
-                { block: '5111270',
-                  standardPrice: '3',
-                  total: 1931,
+                { index: '5111270',
+                  mean: '3',
+                  volume: 1931,
                   buckets:
                    { '90-100': 6,
                      '70-80': 1,
@@ -119,9 +119,9 @@
                      '0.2-0.3': 273,
                      '0.1-0.2': 832,
                      '0-0.1': 165 } },
-                { block: '5111282',
-                  standardPrice: '1',
-                  total: 1831,
+                { index: '5111282',
+                  mean: '1',
+                  volume: 1831,
                   buckets:
                    { '50-60': 2,
                      '40-50': 1,
@@ -138,9 +138,9 @@
                      '0.2-0.3': 273,
                      '0.1-0.2': 832,
                      '0-0.1': 211 } },
-                { block: '5111297',
-                  standardPrice: '3',
-                  total: 1533,
+                { index: '5111297',
+                  mean: '3',
+                  volume: 1533,
                   buckets:
                    { '30-40': 1,
                      '20-30': 2,
@@ -156,9 +156,9 @@
                      '0.2-0.3': 366,
                      '0.1-0.2': 495,
                      '0-0.1': 172 } },
-                { block: '5111300',
-                  standardPrice: '1',
-                  total: 1628,
+                { index: '5111300',
+                  mean: '1',
+                  volume: 1628,
                   buckets:
                    { '90-100': 3,
                      '50-60': 1,
@@ -178,9 +178,9 @@
                      '0.2-0.3': 366,
                      '0.1-0.2': 495,
                      '0-0.1': 192 } },
-                { block: '5111304',
-                  standardPrice: '1',
-                  total: 1633,
+                { index: '5111304',
+                  mean: '1',
+                  volume: 1633,
                   buckets:
                    { '20-30': 3,
                      '10-20': 1,
@@ -195,9 +195,9 @@
                      '0.2-0.3': 366,
                      '0.1-0.2': 495,
                      '0-0.1': 228 } },
-                { block: '5111308',
-                  standardPrice: '2',
-                  total: 1760,
+                { index: '5111308',
+                  mean: '2',
+                  volume: 1760,
                   buckets:
                    { '90-100': 12,
                      '60-70': 1,
@@ -218,9 +218,9 @@
                      '0.2-0.3': 366,
                      '0.1-0.2': 496,
                      '0-0.1': 243 } },
-                { block: '5111311',
-                  standardPrice: '2',
-                  total: 1706,
+                { index: '5111311',
+                  mean: '2',
+                  volume: 1706,
                   buckets:
                    { '40-50': 1,
                      '30-40': 1,
@@ -312,8 +312,8 @@
         </script>
 
         <script>
-            const maxGasPrice = parseInt(d3.max(blocks, (block) => block.standardPrice));
-            const maxPendingTransactions = parseInt(d3.max(blocks, (block) => block.total));
+            const maxGasPrice = parseInt(d3.max(blocks, (block) => block.mean));
+            const maxPendingTransactions = parseInt(d3.max(blocks, (block) => block.volume));
 
             var scale =
             {
@@ -353,7 +353,7 @@
             var areaBuy2 = areaGenerator(areaPointsBuy2);
             var areaSell = areaGenerator(areaPointsSell);
             var areaSell2 = areaGenerator(areaPointsSell2);
-            var line = lineGenerator(blocks.map((block) => parseInt(block.standardPrice)));
+            var line = lineGenerator(blocks.map((block) => parseInt(block.mean)));
 
 /*
             d3.select('.buy1').append('path').attr('d', areaBuy);
