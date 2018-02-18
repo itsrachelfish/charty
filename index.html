@@ -36,6 +36,210 @@
 
         <script>
             // Chart data
+            const blocks =
+            [
+                { index: '5111256',
+                  mean: '1',
+                  volume: 1816,
+                  buckets:
+                   { '90-100': 2,
+                     '20-30': 3,
+                     '10-20': 1,
+                     '4-5': 2,
+                     '3-4': 3,
+                     '2-3': 9,
+                     '1-2': 22,
+                     '0.6-0.7': 2,
+                     '0.5-0.6': 173,
+                     '0.4-0.5': 11,
+                     '0.3-0.4': 287,
+                     '0.2-0.3': 274,
+                     '0.1-0.2': 835,
+                     '0-0.1': 192 } },
+                { index: '5111262',
+                  mean: '1',
+                  volume: 1731,
+                  buckets:
+                   { '50-60': 1,
+                     '30-40': 3,
+                     '20-30': 1,
+                     '10-20': 1,
+                     '4-5': 1,
+                     '3-4': 5,
+                     '2-3': 9,
+                     '1-2': 36,
+                     '0.6-0.7': 2,
+                     '0.5-0.6': 173,
+                     '0.4-0.5': 11,
+                     '0.3-0.4': 286,
+                     '0.2-0.3': 274,
+                     '0.1-0.2': 835,
+                     '0-0.1': 93 } },
+                { index: '5111269',
+                  mean: '3',
+                  volume: 1792,
+                  buckets:
+                   { '90-100': 2,
+                     '40-50': 1,
+                     '30-40': 3,
+                     '20-30': 7,
+                     '10-20': 2,
+                     '4-5': 1,
+                     '3-4': 18,
+                     '2-3': 5,
+                     '1-2': 16,
+                     '0.6-0.7': 2,
+                     '0.5-0.6': 173,
+                     '0.4-0.5': 11,
+                     '0.3-0.4': 285,
+                     '0.2-0.3': 273,
+                     '0.1-0.2': 832,
+                     '0-0.1': 161 } },
+                { index: '5111270',
+                  mean: '3',
+                  volume: 1931,
+                  buckets:
+                   { '90-100': 6,
+                     '70-80': 1,
+                     '60-70': 1,
+                     '50-60': 4,
+                     '40-50': 3,
+                     '30-40': 40,
+                     '20-30': 22,
+                     '10-20': 8,
+                     '5-10': 1,
+                     '4-5': 3,
+                     '3-4': 21,
+                     '2-3': 11,
+                     '1-2': 38,
+                     '0.6-0.7': 3,
+                     '0.5-0.6': 173,
+                     '0.4-0.5': 11,
+                     '0.3-0.4': 285,
+                     '0.2-0.3': 273,
+                     '0.1-0.2': 832,
+                     '0-0.1': 165 } },
+                { index: '5111282',
+                  mean: '1',
+                  volume: 1831,
+                  buckets:
+                   { '50-60': 2,
+                     '40-50': 1,
+                     '20-30': 1,
+                     '10-20': 1,
+                     '4-5': 1,
+                     '3-4': 17,
+                     '2-3': 6,
+                     '1-2': 13,
+                     '0.6-0.7': 3,
+                     '0.5-0.6': 173,
+                     '0.4-0.5': 11,
+                     '0.3-0.4': 285,
+                     '0.2-0.3': 273,
+                     '0.1-0.2': 832,
+                     '0-0.1': 211 } },
+                { index: '5111297',
+                  mean: '3',
+                  volume: 1533,
+                  buckets:
+                   { '30-40': 1,
+                     '20-30': 2,
+                     '10-20': 1,
+                     '4-5': 1,
+                     '3-4': 9,
+                     '2-3': 5,
+                     '1-2': 22,
+                     '0.6-0.7': 2,
+                     '0.5-0.6': 165,
+                     '0.4-0.5': 11,
+                     '0.3-0.4': 280,
+                     '0.2-0.3': 366,
+                     '0.1-0.2': 495,
+                     '0-0.1': 172 } },
+                { index: '5111300',
+                  mean: '1',
+                  volume: 1628,
+                  buckets:
+                   { '90-100': 3,
+                     '50-60': 1,
+                     '40-50': 3,
+                     '30-40': 20,
+                     '20-30': 20,
+                     '10-20': 2,
+                     '5-10': 2,
+                     '4-5': 6,
+                     '3-4': 10,
+                     '2-3': 6,
+                     '1-2': 21,
+                     '0.6-0.7': 2,
+                     '0.5-0.6': 165,
+                     '0.4-0.5': 11,
+                     '0.3-0.4': 280,
+                     '0.2-0.3': 366,
+                     '0.1-0.2': 495,
+                     '0-0.1': 192 } },
+                { index: '5111304',
+                  mean: '1',
+                  volume: 1633,
+                  buckets:
+                   { '20-30': 3,
+                     '10-20': 1,
+                     '4-5': 1,
+                     '3-4': 44,
+                     '2-3': 8,
+                     '1-2': 29,
+                     '0.6-0.7': 2,
+                     '0.5-0.6': 165,
+                     '0.4-0.5': 11,
+                     '0.3-0.4': 280,
+                     '0.2-0.3': 366,
+                     '0.1-0.2': 495,
+                     '0-0.1': 228 } },
+                { index: '5111308',
+                  mean: '2',
+                  volume: 1760,
+                  buckets:
+                   { '90-100': 12,
+                     '60-70': 1,
+                     '50-60': 6,
+                     '40-50': 2,
+                     '30-40': 9,
+                     '20-30': 21,
+                     '10-20': 2,
+                     '5-10': 5,
+                     '4-5': 4,
+                     '3-4': 47,
+                     '2-3': 12,
+                     '1-2': 41,
+                     '0.6-0.7': 2,
+                     '0.5-0.6': 165,
+                     '0.4-0.5': 11,
+                     '0.3-0.4': 280,
+                     '0.2-0.3': 366,
+                     '0.1-0.2': 496,
+                     '0-0.1': 243 } },
+                { index: '5111311',
+                  mean: '2',
+                  volume: 1706,
+                  buckets:
+                   { '40-50': 1,
+                     '30-40': 1,
+                     '20-30': 3,
+                     '10-20': 1,
+                     '5-10': 2,
+                     '4-5': 1,
+                     '3-4': 43,
+                     '2-3': 6,
+                     '1-2': 50,
+                     '0.6-0.7': 2,
+                     '0.5-0.6': 165,
+                     '0.4-0.5': 11,
+                     '0.3-0.4': 280,
+                     '0.2-0.3': 366,
+                     '0.1-0.2': 506,
+                     '0-0.1': 261 } }
+            ];
+
             var areaPointsBuy = [
                 {x: 0, low: 180, high: 200},
                 {x: 100, low: 50, high: 100},
@@ -108,28 +312,55 @@
         </script>
 
         <script>
-            var lineGenerator = d3.line().curve(d3.curveCatmullRom.alpha(1));
+            const maxGasPrice = parseInt(d3.max(blocks, (block) => block.mean));
+            const maxPendingTransactions = parseInt(d3.max(blocks, (block) => block.volume));
+
+            var scale =
+            {
+                price:
+                {
+                    x: d3.scaleLinear().domain([0, 10]).range([0, 1000]),
+                    y: d3.scaleLinear().domain([-maxGasPrice, maxGasPrice * 2]).range([400, 0])
+                },
+
+                mempool:
+                {
+                    x: d3.scaleLinear().domain([0, 10]).range([0, 1000]),
+                    y: d3.scaleLinear().domain([0, maxPendingTransactions]).range([400, 0])
+                },
+            };
+
+            var lineGenerator = d3.line().curve(d3.curveCatmullRom.alpha(1))
+            .x(function(d, i) {
+                return scale.price.x(i);
+            })
+            .y(function(d) {
+                return scale.price.y(d);
+            });
+
             var areaGenerator = d3.area().curve(d3.curveCatmullRom.alpha(1))
             .x(function(d) {
-                return d.x;
+                return scale.mempool.x(d);
             })
             .y0(function(d) {
-                return d.low;
+                return scale.mempool.y(d.low);
             })
             .y1(function(d) {
-                return d.high;
+                return scale.mempool.y(d.high);
             });
 
             var areaBuy = areaGenerator(areaPointsBuy);
             var areaBuy2 = areaGenerator(areaPointsBuy2);
             var areaSell = areaGenerator(areaPointsSell);
             var areaSell2 = areaGenerator(areaPointsSell2);
-            var line = lineGenerator(linePoints);
+            var line = lineGenerator(blocks.map((block) => parseInt(block.mean)));
 
+/*
             d3.select('.buy1').append('path').attr('d', areaBuy);
             d3.select('.buy2').append('path').attr('d', areaBuy2);
             d3.select('.sell1').append('path').attr('d', areaSell);
             d3.select('.sell2').append('path').attr('d', areaSell2);
+*/
             d3.select('.line').attr('d', line);
         </script>
     </body>
