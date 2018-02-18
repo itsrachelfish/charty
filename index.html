@@ -12,64 +12,126 @@
         <style>
             .line {
             	fill: none;
-            	stroke: #999;
+            	stroke: #2d0f41;
+                stroke-width: 2;
             }
 
-            .area path {
-            	fill: #ddd;
-                stroke: none;
-            }
+            .buy1 { fill: #2c5a9c }
+            .buy2 { fill: #3984b6 }
+            .sell1 { fill: #e3572a }
+            .sell2 { fill: #e97e3b }
         </style>
+
     </head>
 
     <body>
-        <svg width="1000" height="300">
-            <g class="area"></g>
+        <svg width="1000" height="400">
+            <g class="area buy3"></g>
+            <g class="area buy2"></g>
+            <g class="area buy1"></g>
+            <g class="area sell1"></g>
+            <g class="area sell2"></g>
+            <g class="area sell3"></g>
             <path class="line"></path>
         </svg>
 
         <script>
-            var yScale = d3.scaleLinear().domain([0, 100]).range([200, 0]);
-
-            var areaGenerator = d3.area().curve(d3.curveCatmullRom.alpha(1))
-              .x(function(d) {
-                return d.x;
-              })
-              .y0(function(d) {
-                return yScale(d.low);
-              })
-              .y1(function(d) {
-                return yScale(d.high);
-              });
-
-            var areaPoints = [
-              {x: 0, low: 30, high: 80},
-              {x: 100, low: 80, high: 100},
-              {x: 200, low: 20, high: 30},
-              {x: 300, low: 20, high: 50},
-              {x: 400, low: 10, high: 40},
-              {x: 900, low: 50, high: 80}
+            // Chart data
+            var areaPointsBuy = [
+              {x: 0, low: 180, high: 200},
+              {x: 100, low: 50, high: 100},
+              {x: 200, low: 120, high: 150},
+              {x: 300, low: 120, high: 175},
+              {x: 400, low: 110, high: 160},
+              {x: 500, low: 110, high: 140},
+              {x: 600, low: 110, high: 120},
+              {x: 700, low: 110, high: 130},
+              {x: 800, low: 100, high: 110},
+              {x: 900, low: 50, high: 90},
+              {x: 1000, low: 190, high: 200}
             ];
 
-            var area = areaGenerator(areaPoints);
+            var areaPointsBuy2 = [
+              {x: 0, low: 150, high: 180},
+              {x: 100, low: 40, high: 50},
+              {x: 200, low: 100, high: 120},
+              {x: 300, low: 90, high: 120},
+              {x: 400, low: 80, high: 110},
+              {x: 500, low: 90, high: 110},
+              {x: 600, low: 80, high: 110},
+              {x: 700, low: 70, high: 110},
+              {x: 800, low: 90, high: 100},
+              {x: 900, low: 30, high: 50},
+              {x: 1000, low: 170, high: 190}
+            ];
 
-            // Create a path element and set its d attribute
-            d3.select('.area').append('path').attr('d', area);
+            var areaPointsSell = [
+              {x: 0, low: 200, high: 240},
+              {x: 100, low: 100, high: 120},
+              {x: 200, low: 150, high: 190},
+              {x: 300, low: 175, high: 185},
+              {x: 400, low: 160, high: 200},
+              {x: 500, low: 140, high: 150},
+              {x: 600, low: 120, high: 130},
+              {x: 700, low: 130, high: 140},
+              {x: 800, low: 110, high: 140},
+              {x: 900, low: 90, high: 100},
+              {x: 1000, low: 200, high: 220}
+            ];
 
-            var lineGenerator = d3.line().curve(d3.curveCatmullRom.alpha(1));
+            var areaPointsSell2 = [
+              {x: 0, low: 240, high: 280},
+              {x: 100, low: 120, high: 150},
+              {x: 200, low: 190, high: 220},
+              {x: 300, low: 185, high: 195},
+              {x: 400, low: 200, high: 220},
+              {x: 500, low: 150, high: 180},
+              {x: 600, low: 130, high: 150},
+              {x: 700, low: 140, high: 150},
+              {x: 800, low: 140, high: 160},
+              {x: 900, low: 100, high: 120},
+              {x: 1000, low: 220, high: 240}
+            ];
+
             var linePoints = [
-                [0, 80],
+                [0, 200],
                 [100, 100],
-                [200, 30],
-                [300, 50],
-                [400, 40],
-                [900, 80]
+                [200, 150],
+                [300, 175],
+                [400, 160],
+                [500, 140],
+                [600, 120],
+                [700, 130],
+                [800, 110],
+                [900, 90],
+                [1000, 200]
             ];
+        </script>
 
-            var pathData = lineGenerator(linePoints);
+        <script>
+            var lineGenerator = d3.line().curve(d3.curveCatmullRom.alpha(1));
+            var areaGenerator = d3.area().curve(d3.curveCatmullRom.alpha(1))
+            .x(function(d) {
+                return d.x;
+            })
+            .y0(function(d) {
+                return d.low;
+            })
+            .y1(function(d) {
+                return d.high;
+            });
 
-            // Select the path element and set its d attribute
-            d3.select('.line').attr('d', pathData);
+            var areaBuy = areaGenerator(areaPointsBuy);
+            var areaBuy2 = areaGenerator(areaPointsBuy2);
+            var areaSell = areaGenerator(areaPointsSell);
+            var areaSell2 = areaGenerator(areaPointsSell2);
+            var line = lineGenerator(linePoints);
+
+            d3.select('.buy1').append('path').attr('d', areaBuy);
+            d3.select('.buy2').append('path').attr('d', areaBuy2);
+            d3.select('.sell1').append('path').attr('d', areaSell);
+            d3.select('.sell2').append('path').attr('d', areaSell2);
+            d3.select('.line').attr('d', line);
         </script>
     </body>
 </html>
