@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>[Project Name Here]</title>
+        <title>Charty!</title>
 
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -73,6 +73,22 @@
                 return scale.area.y(d.high);
             });
 
+            // Loop through buckets
+            let buckets = {};
+
+            blocks.forEach((block) =>
+            {
+
+            });
+
+            // Generate dataset for each unique bucket
+
+            // Determine which buckets are above / below the mean
+            // Apply colors based on that
+
+            // Dynamically generate path / group elements
+
+
             // Generate sample buy data
             var areaBuy = areaGenerator(blocks.map((block) =>
             {
@@ -83,6 +99,7 @@
             var areaBuy2 = areaGenerator(blocks.map((block) =>
             {
                 var thingy = maxPendingTransactions / maxGasPrice;
+
                 return {'low': block.mean * thingy, 'high': block.mean * thingy * 1.4}
             }));
 
