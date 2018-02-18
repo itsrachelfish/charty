@@ -28,9 +28,9 @@
             <g class="area buy3"></g>
             <g class="area buy2"></g>
             <g class="area buy1"></g>
-            <g class="area sell1"></g>
-            <g class="area sell2"></g>
             <g class="area sell3"></g>
+            <g class="area sell2"></g>
+            <g class="area sell1"></g>
             <path class="line"></path>
         </svg>
 
@@ -239,128 +239,77 @@
                      '0.1-0.2': 506,
                      '0-0.1': 261 } }
             ];
-
-            var areaPointsBuy = [
-                {x: 0, low: 180, high: 200},
-                {x: 100, low: 50, high: 100},
-                {x: 200, low: 120, high: 150},
-                {x: 300, low: 120, high: 175},
-                {x: 400, low: 110, high: 160},
-                {x: 500, low: 110, high: 140},
-                {x: 600, low: 110, high: 120},
-                {x: 700, low: 110, high: 130},
-                {x: 800, low: 100, high: 110},
-                {x: 900, low: 50, high: 90},
-                {x: 1000, low: 190, high: 200}
-            ];
-
-            var areaPointsBuy2 = [
-                {x: 0, low: 150, high: 180},
-                {x: 100, low: 40, high: 50},
-                {x: 200, low: 100, high: 120},
-                {x: 300, low: 90, high: 120},
-                {x: 400, low: 80, high: 110},
-                {x: 500, low: 90, high: 110},
-                {x: 600, low: 80, high: 110},
-                {x: 700, low: 70, high: 110},
-                {x: 800, low: 90, high: 100},
-                {x: 900, low: 30, high: 50},
-                {x: 1000, low: 170, high: 190}
-            ];
-
-            var areaPointsSell = [
-                {x: 0, low: 200, high: 240},
-                {x: 100, low: 100, high: 120},
-                {x: 200, low: 150, high: 190},
-                {x: 300, low: 175, high: 185},
-                {x: 400, low: 160, high: 200},
-                {x: 500, low: 140, high: 150},
-                {x: 600, low: 120, high: 130},
-                {x: 700, low: 130, high: 140},
-                {x: 800, low: 110, high: 140},
-                {x: 900, low: 90, high: 100},
-                {x: 1000, low: 200, high: 220}
-            ];
-
-            var areaPointsSell2 = [
-                {x: 0, low: 240, high: 280},
-                {x: 100, low: 120, high: 150},
-                {x: 200, low: 190, high: 220},
-                {x: 300, low: 185, high: 195},
-                {x: 400, low: 200, high: 220},
-                {x: 500, low: 150, high: 180},
-                {x: 600, low: 130, high: 150},
-                {x: 700, low: 140, high: 150},
-                {x: 800, low: 140, high: 160},
-                {x: 900, low: 100, high: 120},
-                {x: 1000, low: 220, high: 240}
-            ];
-
-            var linePoints = [
-                [0, 200],
-                [100, 100],
-                [200, 150],
-                [300, 175],
-                [400, 160],
-                [500, 140],
-                [600, 120],
-                [700, 130],
-                [800, 110],
-                [900, 90],
-                [1000, 200]
-            ];
         </script>
 
         <script>
-            const maxGasPrice = parseInt(d3.max(blocks, (block) => block.mean));
-            const maxPendingTransactions = parseInt(d3.max(blocks, (block) => block.volume));
+            const maxGasPrice = d3.max(blocks, (block) => block.mean);
+            const maxPendingTransactions = d3.max(blocks, (block) => block.volume);
 
             var scale =
             {
-                price:
+                x: d3.scaleLinear().domain([0, 10]).range([0, 1000]),
+
+                line:
                 {
-                    x: d3.scaleLinear().domain([0, 10]).range([0, 1000]),
                     y: d3.scaleLinear().domain([-maxGasPrice, maxGasPrice * 2]).range([400, 0])
                 },
 
-                mempool:
+                area:
                 {
-                    x: d3.scaleLinear().domain([0, 10]).range([0, 1000]),
-                    y: d3.scaleLinear().domain([0, maxPendingTransactions]).range([400, 0])
-                },
+                    y: d3.scaleLinear().domain([-maxPendingTransactions, maxPendingTransactions * 2]).range([400, 0])
+                }
             };
 
             var lineGenerator = d3.line().curve(d3.curveCatmullRom.alpha(1))
             .x(function(d, i) {
-                return scale.price.x(i);
+                return scale.x(i);
             })
             .y(function(d) {
-                return scale.price.y(d);
+                return scale.line.y(d);
             });
 
             var areaGenerator = d3.area().curve(d3.curveCatmullRom.alpha(1))
-            .x(function(d) {
-                return scale.mempool.x(d);
+            .x(function(d, i) {
+                return scale.x(i);
             })
             .y0(function(d) {
-                return scale.mempool.y(d.low);
+                return scale.area.y(d.low);
             })
             .y1(function(d) {
-                return scale.mempool.y(d.high);
+                return scale.area.y(d.high);
             });
 
-            var areaBuy = areaGenerator(areaPointsBuy);
-            var areaBuy2 = areaGenerator(areaPointsBuy2);
-            var areaSell = areaGenerator(areaPointsSell);
-            var areaSell2 = areaGenerator(areaPointsSell2);
-            var line = lineGenerator(blocks.map((block) => parseInt(block.mean)));
+            // Generate sample buy data
+            var areaBuy = areaGenerator(blocks.map((block) =>
+            {
+                var thingy = maxPendingTransactions / maxGasPrice;
+                return {'low': block.mean * thingy, 'high': block.mean * thingy * 1.2}
+            }));
 
-/*
+            var areaBuy2 = areaGenerator(blocks.map((block) =>
+            {
+                var thingy = maxPendingTransactions / maxGasPrice;
+                return {'low': block.mean * thingy, 'high': block.mean * thingy * 1.4}
+            }));
+
+            var areaSell = areaGenerator(blocks.map((block) =>
+            {
+                var thingy = maxPendingTransactions / maxGasPrice;
+                return {'high': block.mean * thingy, 'low': block.mean * thingy * 0.8}
+            }));
+
+            var areaSell2 = areaGenerator(blocks.map((block) =>
+            {
+                var thingy = maxPendingTransactions / maxGasPrice;
+                return {'high': block.mean * thingy, 'low': block.mean * thingy * 0.6}
+            }));
+
+            var line = lineGenerator(blocks.map((block) => block.mean));
+
             d3.select('.buy1').append('path').attr('d', areaBuy);
             d3.select('.buy2').append('path').attr('d', areaBuy2);
             d3.select('.sell1').append('path').attr('d', areaSell);
             d3.select('.sell2').append('path').attr('d', areaSell2);
-*/
             d3.select('.line').attr('d', line);
         </script>
     </body>
