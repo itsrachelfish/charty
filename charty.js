@@ -94,6 +94,14 @@ let buckets = blocks.map((block)=>{
 
 // Dynamically generate path / group elements
 
+// Math for above the mean
+// low = mean * (maxPendingTransactions / maxGasPrice)
+// high = low + numberOfTransactions
+
+// Math for below the mean
+// high = mean * (maxPendingTransactions / maxGasPrice)
+// low = high - numberOfTransactions
+
 
 // Generate sample buy data
 var areaBuy = areaGenerator(blocks.map((block) =>
