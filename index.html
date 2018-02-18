@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>[Project Name Here]</title>
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
+
+        <style>
+            .line {
+            	fill: none;
+            	stroke: #999;
+            }
+
+            .area path {
+            	fill: #ddd;
+                stroke: none;
+            }
+        </style>
+    </head>
+
+    <body>
+        <svg width="1000" height="300">
+            <g class="area"></g>
+            <path class="line"></path>
+        </svg>
+
+        <script>
+            var yScale = d3.scaleLinear().domain([0, 100]).range([200, 0]);
+
+            var areaGenerator = d3.area().curve(d3.curveCatmullRom.alpha(1))
+              .x(function(d) {
+                return d.x;
+              })
+              .y0(function(d) {
+                return yScale(d.low);
+              })
+              .y1(function(d) {
+                return yScale(d.high);
+              });
+
+            var areaPoints = [
+              {x: 0, low: 30, high: 80},
+              {x: 100, low: 80, high: 100},
+              {x: 200, low: 20, high: 30},
+              {x: 300, low: 20, high: 50},
+              {x: 400, low: 10, high: 40},
+              {x: 900, low: 50, high: 80}
+            ];
+
+            var area = areaGenerator(areaPoints);
+
+            // Create a path element and set its d attribute
+            d3.select('.area').append('path').attr('d', area);
+
+            var lineGenerator = d3.line().curve(d3.curveCatmullRom.alpha(1));
+            var linePoints = [
+                [0, 80],
+                [100, 100],
+                [200, 30],
+                [300, 50],
+                [400, 40],
+                [900, 80]
+            ];
+
+            var pathData = lineGenerator(linePoints);
+
+            // Select the path element and set its d attribute
+            d3.select('.line').attr('d', pathData);
+        </script>
+    </body>
+</html>
