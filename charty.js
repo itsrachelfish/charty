@@ -35,110 +35,6 @@ var areaGenerator = d3.area().curve(d3.curveCatmullRom.alpha(1))
     return scale.area.y(d.high);
 });
 
-// Loop through buckets
-//let buckets = {};
-
-//blocks is from sample data
-
-//single object
-//{above,below}
-/*
-[
-    { index: '5111256',
-      mean: '1',
-      volume: 1816,
-      buckets:
-       { '90-100': 2,
-         '20-30': 3,
-         '10-20': 1,
-         '4-5': 2,
-         '3-4': 3,
-         '2-3': 9,
-         '1-2': 22,
-         '0.6-0.7': 2,
-         '0.5-0.6': 173,
-         '0.4-0.5': 11,
-         '0.3-0.4': 287,
-         '0.2-0.3': 274,
-         '0.1-0.2': 835,
-         '0-0.1': 192 } },
-    { index: '5111262',
-      mean: '1',
-      volume: 1731,
-      buckets:
-       { '50-60': 1,
-         '30-40': 3,
-         '20-30': 1,
-         '10-20': 1,
-         '4-5': 1,
-         '3-4': 5,
-         '2-3': 9,
-         '1-2': 36,
-         '0.6-0.7': 2,
-         '0.5-0.6': 173,
-         '0.4-0.5': 11,
-         '0.3-0.4': 286,
-         '0.2-0.3': 274,
-         '0.1-0.2': 835,
-         '0-0.1': 93 } }
- ]
-
- "{
- "above": {
- "90-100": [],
- "80-90": [],
- "70-80": [],
- "60-70": [],
- "50-60": [],
- "40-50": [],
- "30-40": [],
- "20-30": [],
- "10-20": [],
- "5-10": [],
- "4-5": [],
- "3-4": [],
- "2-3": [],
- "1-2": [],
- "0.9-1": [],
- "0.8-0.9": [],
- "0.7-0.8": [],
- "0.6-0.7": [],
- "0.5-0.6": [],
- "0.4-0.5": [],
- "0.3-0.4": [],
- "0.2-0.3": [],
- "0.1-0.2": [],
- "0-0.1": []
- },
- "below": {
- "90-100": [],
- "80-90": [],
- "70-80": [],
- "60-70": [],
- "50-60": [],
- "40-50": [],
- "30-40": [],
- "20-30": [],
- "10-20": [],
- "5-10": [],
- "4-5": [],
- "3-4": [],
- "2-3": [],
- "1-2": [],
- "0.9-1": [],
- "0.8-0.9": [],
- "0.7-0.8": [],
- "0.6-0.7": [],
- "0.5-0.6": [],
- "0.4-0.5": [],
- "0.3-0.4": [],
- "0.2-0.3": [],
- "0.1-0.2": [], 
- "0-0.1": []
- }
- }"
- */
-
 let buckets = [
     {'min': 90,  'max': 100},
     {'min': 80,  'max': 90},
@@ -174,9 +70,6 @@ let buckets = [
     below:{}
 });
 
-
-
-
 blocks.forEach((block)=>{
     let currentBucket;
     let bucketRange = (key)=> key.split('-').map((v)=>parseInt(v,10));
@@ -198,6 +91,43 @@ blocks.forEach((block)=>{
         }
     }
     return block;
+});
+
+// Filter out null arrays
+for(const bucket in buckets.above)
+{
+    const values = buckets.above[bucket].filter(value => value != null);
+
+    if(!values.length)
+    {
+        delete buckets.above[bucket];
+    }
+}
+
+for(const bucket in buckets.below)
+{
+    const values = buckets.below[bucket].filter(value => value != null);
+
+    if(!values.length)
+    {
+        delete buckets.below[bucket];
+    }
+}
+
+const areaAbove = [];
+const areaBelow = [];
+
+Object.keys(buckets.above).reverse().forEach(function(bucket)
+{
+    const transactions = buckets.above[bucket];
+
+    areaAbove.push(areaGenerator(transactions.map((count, index) =>
+    {
+        const block = blocks[index];
+        const chartRatio = maxPendingTransactions / maxGasPrice;
+        return {'low': block.mean * chartRatio, 'high': (block.mean * chartRatio) + (count * 100)}
+    })));
+
 });
 
 
@@ -243,32 +173,32 @@ let buckets = blocks.map((block)=>{
 // Generate sample buy data
 var areaBuy = areaGenerator(blocks.map((block) =>
 {
-    var thingy = maxPendingTransactions / maxGasPrice;
-    return {'low': block.mean * thingy, 'high': block.mean * thingy * 1.2}
+    var chartRatio = maxPendingTransactions / maxGasPrice;
+    return {'low': block.mean * chartRatio, 'high': block.mean * chartRatio * 1.2}
 }));
 
 var areaBuy2 = areaGenerator(blocks.map((block) =>
 {
-    var thingy = maxPendingTransactions / maxGasPrice;
+    var chartRatio = maxPendingTransactions / maxGasPrice;
 
-    return {'low': block.mean * thingy, 'high': block.mean * thingy * 1.4}
+    return {'low': block.mean * chartRatio, 'high': block.mean * chartRatio * 1.4}
 }));
 
 var areaSell = areaGenerator(blocks.map((block) =>
 {
-    var thingy = maxPendingTransactions / maxGasPrice;
-    return {'high': block.mean * thingy, 'low': block.mean * thingy * 0.8}
+    var chartRatio = maxPendingTransactions / maxGasPrice;
+    return {'high': block.mean * chartRatio, 'low': block.mean * chartRatio * 0.8}
 }));
 
 var areaSell2 = areaGenerator(blocks.map((block) =>
 {
-    var thingy = maxPendingTransactions / maxGasPrice;
-    return {'high': block.mean * thingy, 'low': block.mean * thingy * 0.6}
+    var chartRatio = maxPendingTransactions / maxGasPrice;
+    return {'high': block.mean * chartRatio, 'low': block.mean * chartRatio * 0.6}
 }));
 
 var line = lineGenerator(blocks.map((block) => block.mean));
 
-d3.select('.buy1').append('path').attr('d', areaBuy);
+d3.select('.buy1').append('path').attr('d', areaAbove[0]);
 d3.select('.buy2').append('path').attr('d', areaBuy2);
 d3.select('.sell1').append('path').attr('d', areaSell);
 d3.select('.sell2').append('path').attr('d', areaSell2);
